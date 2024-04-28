@@ -15,13 +15,21 @@ export interface PlatForm {
     metacritic: number
   }
 
+  export interface GameQuery {
+    genre: Genre | null;
+    platform: PlatForm | null;
+    sortOrder: string
+  }
 
-const useGames =(activeGenre:Genre | null, activePlatform: PlatForm | null) =>  useData<Game>("/games",
+
+const useGames =(gameQuery:GameQuery) =>  useData<Game>("/games",
 { requestConfig:{
-  params: { 
-  genres : activeGenre?.id,
-  platforms : activePlatform?.id
-}}
-  , deps:[activeGenre?.id, activePlatform?.id] } )
+    params: { 
+    genres : gameQuery.genre?.id,
+    platforms : gameQuery.platform?.id,
+    ordering: gameQuery.sortOrder
+  }},
+  deps:[gameQuery]
+})
 
 export default useGames
