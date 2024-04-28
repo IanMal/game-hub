@@ -1,16 +1,15 @@
 
 import useData from './useData';
 
-  interface Genres {
+  export interface Genre {
     id: number;
-    name: string;
-    background_image: string;
+    name: string;    
     image_background: string;
     // parent_platforms: { platform: PlatFrom}[];
     // metacritic: number
 }
 
 
-const useGenres = () =>  useData<Genres>("/genres")
+const useGenres = () =>  useData<Genre>("/genres")
 
 export default useGenres

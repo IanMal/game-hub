@@ -1,4 +1,5 @@
 import useData from './useData';
+import { Genre } from './useGenres';
 
 export interface PlatFrom {
   id:number;
@@ -6,7 +7,7 @@ export interface PlatFrom {
   slug:string
 }
 
- export interface Games {
+ export interface Game {
     id: number;
     name: string;
     background_image: string;
@@ -15,6 +16,7 @@ export interface PlatFrom {
   }
 
 
-const useGames =() =>  useData<Games>("/games")
+const useGames =(activeGenre:Genre | null) =>  useData<Game>("/games",
+{ requestConfig:{ params: { genres:activeGenre?.id }, }, deps:[activeGenre?.id] } )
 
 export default useGames

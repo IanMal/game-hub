@@ -4,8 +4,12 @@ import "./App.css";
 import NavBar from "./components/NavBar";
 import GameGrid from "./components/GameGrid";
 import GenreList from "./components/GenreList";
+import { useState } from "react";
+import { Genre } from "./hooks/useGenres";
 
 function App() {
+  const [activeGenre, setActiveGenre] = useState<Genre | null>(null);
+
   return (
     <Grid
       templateAreas={{
@@ -23,12 +27,12 @@ function App() {
 
       <Show above="lg">
         <GridItem area="aside" paddingX={5}>
-          <GenreList />
+          <GenreList onSelectGenre={setActiveGenre} />
         </GridItem>
       </Show>
 
       <GridItem area="main">
-        <GameGrid />
+        <GameGrid activeGenre={activeGenre} />
       </GridItem>
     </Grid>
   );
