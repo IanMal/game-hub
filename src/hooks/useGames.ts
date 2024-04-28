@@ -18,16 +18,18 @@ export interface PlatForm {
   export interface GameQuery {
     genre: Genre | null;
     platform: PlatForm | null;
-    sortOrder: string
+    sortOrder: string;
+    searchText: string
   }
 
 
-const useGames =(gameQuery:GameQuery) =>  useData<Game>("/games",
+const useGames =(gameQuery: GameQuery) =>  useData<Game>("/games",
 { requestConfig:{
     params: { 
     genres : gameQuery.genre?.id,
     platforms : gameQuery.platform?.id,
-    ordering: gameQuery.sortOrder
+    ordering: gameQuery.sortOrder,
+    search: gameQuery.searchText
   }},
   deps:[gameQuery]
 })
