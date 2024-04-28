@@ -1,5 +1,5 @@
 
-import useData from './useData';
+import genres from '../data/genres';
 
   export interface Genre {
     id: number;
@@ -9,6 +9,10 @@ import useData from './useData';
 }
 
 
-const useGenres = () =>  useData<Genre>("/genres")
+const useGenres = ():[Genre[],string,boolean]  => ([
+  genres,
+  "",
+  false
+])
 
 export default useGenres
