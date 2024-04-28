@@ -5,8 +5,7 @@ import useData from './useData';
     id: number;
     name: string;    
     image_background: string;
-    // parent_platforms: { platform: PlatFrom}[];
-    // metacritic: number
+    
 }
 
 

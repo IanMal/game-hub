@@ -1,7 +1,7 @@
 import useData from './useData';
 import { Genre } from './useGenres';
 
-export interface PlatFrom {
+export interface PlatForm {
   id:number;
   name:string;
   slug:string
@@ -11,12 +11,17 @@ export interface PlatFrom {
     id: number;
     name: string;
     background_image: string;
-    parent_platforms: { platform: PlatFrom}[];
+    parent_platforms: { platform: PlatForm}[];
     metacritic: number
   }
 
 
-const useGames =(activeGenre:Genre | null) =>  useData<Game>("/games",
-{ requestConfig:{ params: { genres:activeGenre?.id }, }, deps:[activeGenre?.id] } )
+const useGames =(activeGenre:Genre | null, activePlatform: PlatForm | null) =>  useData<Game>("/games",
+{ requestConfig:{
+  params: { 
+  genres : activeGenre?.id,
+  platforms : activePlatform?.id
+}}
+  , deps:[activeGenre?.id, activePlatform?.id] } )
 
 export default useGames
