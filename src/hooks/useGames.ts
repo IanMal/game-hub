@@ -6,7 +6,7 @@ export interface PlatFrom {
   slug:string
 }
 
- interface Games {
+ export interface Games {
     id: number;
     name: string;
     background_image: string;

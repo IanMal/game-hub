@@ -1,8 +1,8 @@
 import { Card, CardBody, Skeleton, SkeletonText } from "@chakra-ui/react";
 
-const GameCarSkletion = () => {
+const GameCardSkleton = () => {
   return (
-    <Card borderRadius={10} overflow="hidden" width="300px">
+    <Card>
       <Skeleton height="200px" />
       <CardBody>
         <SkeletonText />
@@ -11,4 +11,4 @@ const GameCarSkletion = () => {
   );
 };
 
-export default GameCarSkletion;
+export default GameCardSkleton;

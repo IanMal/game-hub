@@ -15,20 +15,21 @@ const useData = <T>(endPoint:string) :[T[],string,boolean] => {
   
   
     useEffect(() => {
+        let didAbort = false // This has to set to true in cleanUp
+        
         const controller = new AbortController()
-        let abort = false
         setIsLoading(true)
       apiClient
-        .get<FetchResponse<T>>(endPoint,{signal:controller.signal})
-        .then((res) => setGenres(res.data.results))
+        .get<FetchResponse<T>>(endPoint,{ signal:controller.signal })
+        .then(((res) => !didAbort && setGenres(res.data.results)))
         .catch((error) => { 
             if(error instanceof CanceledError ) return
-            setErr(error.message)
+            !didAbort && setErr(error.message)
         })
-        .finally(() => !abort&&setIsLoading(false));
+        .finally(() => !didAbort && setIsLoading(false));
 
         return () => {
-            abort = true
+            didAbort = true
             controller.abort()
         }
     },[]);
