@@ -12,7 +12,8 @@ export interface PlatForm {
     name: string;
     background_image: string;
     parent_platforms: { platform: PlatForm}[];
-    metacritic: number
+    metacritic: number;
+    rating_top: number
   }
 
   export interface GameQuery {
