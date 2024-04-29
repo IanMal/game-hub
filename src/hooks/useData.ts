@@ -1,6 +1,7 @@
-import{ useEffect, useState } from 'react'
+
 import apiClient from '../services/apiClient';
-import { AxiosRequestConfig, CanceledError } from 'axios';
+import { AxiosRequestConfig,} from 'axios';
+import { useQuery } from '@tanstack/react-query';
 
 
 interface FetchResponse<T> {
@@ -12,35 +13,29 @@ interface Configs {
     deps: any[];
 }
 
-const useData = <T>(endPoint: string, configs?:Configs) :[T[],string,boolean] => {
-    const {requestConfig = null, deps = []} = configs || {}
+type Result<T> = [
+    T[] | undefined,
+    string | undefined, 
+    boolean
+]
+    
 
-    const [data, setGenres] = useState<T[]>([]);
-    const [error, setErr] = useState("");
-    const [isLoading, setIsLoading] = useState(false);
+const useData = <T>(endPoint: string, configs?:Configs) : Result<T> => {
+    const { requestConfig = null, deps=[] } = configs || {}
+
+    const fetchData = ()=>
+        apiClient
+        .get<FetchResponse<T>>(endPoint,{ ...requestConfig })
+        .then(((res) => (res.data.results)))
+
   
-  
-    useEffect(() => {
-        let didAbort = false // This has to set to true in cleanUp
-        
-        const controller = new AbortController()
-        setIsLoading(true)
-      apiClient
-        .get<FetchResponse<T>>(endPoint,{ signal:controller.signal, ...requestConfig })
-        .then(((res) => !didAbort && setGenres(res.data.results)))
-        .catch((error) => { 
-            if(error instanceof CanceledError ) return
-            !didAbort && setErr(error.message)
-        })
-        .finally(() => !didAbort && setIsLoading(false));
+   const { data, error, isLoading } = useQuery<T[],Error>({
+        queryKey: [endPoint, ...deps],
+        queryFn: fetchData
+    })    
 
-        return () => {
-            didAbort = true
-            controller.abort()
-        }
-    }, deps);
-
-    return [data, error, isLoading]
+    return [data, error?.message, isLoading]
 }
 
 export default useData
+

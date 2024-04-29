@@ -10,7 +10,7 @@ interface Props {
 const GenreList = ({ onSelectGenre, activeGenre }: Props) => {
   const [genres, error, isLoading] = useGenres();
 
-  if (isLoading || error) return <Spinner />;
+  if (!genres || isLoading || error) return <Spinner />;
   return (
     <>
       <HStack>
@@ -20,7 +20,7 @@ const GenreList = ({ onSelectGenre, activeGenre }: Props) => {
       </HStack>
 
       <List>
-        {genres.map((g, i) => (
+        {genres?.map((g, i) => (
           <ListItem key={i} paddingY="5px">
             <HStack>
               <Image
